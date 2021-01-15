@@ -1,5 +1,4 @@
 #include <iostream>
-#include <any>
 #include <algorithm>
 
 class NonTypeSafe : public std::bad_cast
