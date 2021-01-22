@@ -1,20 +1,26 @@
 #pragma once
-
 #include <iostream>
 #include <algorithm>
+#include <string>
 
+/*
+<--------Exception overrides what() method and informs us------>
+<------------which exactly non-type-safe cast we have---------->
+								                               */
 class NonTypeSafe : public std::bad_cast
 {
-	const char* for_what;
+	 std::string str = "Error, non-type-safe casting to ";
 public:
-	NonTypeSafe(const char* message) : for_what(message) {}
+	NonTypeSafe(std::string message)
+	{
+		str += message;
+	}
 
-	const char* what() const noexcept { return for_what; }
+	const char* what() const noexcept { return str.c_str(); }
 };
 
 class AnyType
 {
-	// how to declare a prototype of anonymous union?
 	union
 	{
 		bool		 m_bool;
@@ -26,7 +32,11 @@ class AnyType
 		double		 m_double;
 		long double  m_long_double;
 	};
-
+	
+/*
+<-----enum is for storing current state (type)------->
+<-----------------of AnyType object------------------>						 
+													*/
 	enum class TYPES;
 
 public:
@@ -46,6 +56,12 @@ public:
 
 	explicit AnyType(long double p_long_double);
 
+	explicit AnyType() = delete;
+
+
+/*
+<-------assignent operators------->
+								 */
 	AnyType& operator=(bool b);
 
 	AnyType& operator=(char c);
@@ -62,8 +78,19 @@ public:
 
 	AnyType& operator=(long double l_d);
 
+	AnyType& operator=(const AnyType& anyType) = default;
+
+/*
+<------getting current type------>
+<-------of AnyType object-------->
+							    */
 	const type_info& getType();
 
+/*
+<---Casting functions. If cast is not---->
+<--type-safe, throwing custom exception.->
+<-----------(getters actually)----------->
+										*/
 	bool toBool();
 
 	char toChar();
@@ -80,5 +107,9 @@ public:
 
 	long double toLongDouble();
 
+/*
+<--function, that swaps values of-->
+<-------two AnyType objects-------->
+								  */
 	void swap(AnyType& obj);
 };
