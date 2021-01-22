@@ -10,7 +10,6 @@ int main()
 
 	//demonstrating work of default assigment constructor
 	AnyType anyType_second(anyType_first);
-
 /*
 	Printing out the current state of second AnyType object.
 	It should contain the same type (int) like an first AnyType object
@@ -18,7 +17,7 @@ int main()
 	std::cout << "Type of anyType_second is " << anyType_second.getType().name() << std::endl;
 
 	//now, lets cast anyType_first object to bool
-	anyType_first = 1.971f;
+	anyType_first = true;
 	std::cout << "Now, type of anyType_first is " << anyType_first.getType().name() << std::endl;
 
 	//now, lets cast anyType_second object to double
